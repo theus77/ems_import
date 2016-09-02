@@ -1,0 +1,25 @@
+services:
+    ems_import.import:
+        class: EmsImportBundle\Command\ImportCommand
+        arguments: ['@doctrine','@logger','@app.elasticsearch','@ems_import.extractJsonConfigService','@ems_import.ParsingTreeService','@ems_import.callbackFunctionService','@ems_import.CreateElasticEntryService']
+        tags:
+            -  { name: console.command }
+
+    ems_import.callbackFunctionService:
+        class: EmsImportBundle\Service\CallbackFunctionService
+        arguments: ['@logger']
+
+    ems_import.CreateElasticEntryService:
+        class: EmsImportBundle\Service\CreateElasticEntryService
+        arguments: ['@doctrine', '@logger', '@app.elasticsearch']
+
+    ems_import.extractJsonConfigService:
+        class: EmsImportBundle\Service\ExtractJsonConfigService
+        arguments: ['@doctrine', '@logger']
+
+    ems_import.extractXmlService:
+        class: EmsImportBundle\Service\ExtractXmlService
+
+    ems_import.parsingTreeService:
+        class: EmsImportBundle\Service\ParsingTreeService
+        arguments: ['@ems_import.ExtractXmlService']
